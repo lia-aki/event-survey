@@ -22,7 +22,7 @@
 <body class="bg-[#fafafa] text-[#333]">
 
     <header class="bg-white border-b border-pink-100 p-8 mb-8 text-center shadow-sm">
-        <h1 id="title" class="text-2xl font-bold text-[#d23669] mb-2">RosenliaDoll イベント活動</h1>
+        <h1 id="title" class="text-2xl font-bold text-[#d23669] mb-2">RosenliaDollアンケート</h1>
         <div id="event-details" class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-gray-500 opacity-0 transition-opacity duration-500">
         	<span>イベント：<span id="event-name" class="font-semibold text-gray-800">読み込み中...</span></span>
             <span>開催日：<span id="event-date" class="font-semibold text-gray-800">-</span></span>
@@ -33,12 +33,12 @@
 
     <main class="max-w-4xl mx-auto px-4 mb-20">
     	<div id="status-banner" class="hidden bg-gray-100 border border-gray-200 rounded-2xl p-4 mb-6 text-center text-gray-500 text-sm">
-	        今回の事前調査の投票受付は終了いたしました。
+	        今回のアンケートの投票受付は終了いたしました。
 	    </div>
 	    
 	    <div class="bg-white border border-pink-100 rounded-2xl p-6 mb-10 text-center shadow-sm">
             <p class="text-sm leading-relaxed text-gray-600">
-                <span class="text-pink-500 font-bold">【事前調査】</span><br>
+                <span class="text-pink-500 font-bold">【アンケート】</span><br>
                 当日のお持ち込み数の参考にさせていただきます。<br>
                 お迎えを検討されている作品に「投票」ボタンを押してください。
             </p>
@@ -98,7 +98,7 @@
                     document.getElementById('event-date').innerText = config.event_date;
                     document.getElementById('booth-no').innerText = config.booth_no;
                     document.getElementById('event-details').classList.remove('opacity-0');
-                    document.title = "RosenliaDoll イベント活動";
+                    document.title = "RosenliaDollアンケート";
                     
                     // 设置全局开关状态
                     isVoteAllowed = config.vote_flg; 
@@ -125,6 +125,8 @@
 
             const grid = document.getElementById('items-grid');
             
+            const totalVotes = allItems.reduce((sum, item) => sum + (item.votes || 0), 0);
+            
             if (error || !items || items.length === 0) {
                 grid.innerHTML = '<p class="col-span-full text-center text-gray-400">表示できるアイテムがありません。</p>';
                 return;
@@ -142,6 +144,11 @@
                     buttonText = '受付終了';
                 }
                 
+
+                const voteRate = totalVotes === 0 
+		            ? 0 
+		            : ((item.votes / totalVotes) * 100).toFixed(1);
+                
                 return `
                 <div class="item-card bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">
                     <img src="${item.image_url}" class="w-full h-auto block" alt="${item.item_name}" onerror="this.src='https://placehold.jp/24/cccccc/ffffff/400x300.png?text=No%20Image'">
@@ -149,7 +156,7 @@
                         <h3 class="font-bold text-lg mb-3 text-gray-800">${item.item_name}</h3>
                         <div class="flex justify-between items-end mb-4">
                             <span class="text-xs text-gray-400">Item ID: ${item.id}</span>
-                            <span class="text-pink-500 text-sm font-bold">意向数: <span id="count-${item.id}" class="text-xl">${item.votes}</span></span>
+                            <span class="text-pink-500 text-sm font-bold">投票率: <span id="count-${item.id}" class="text-xl">${voteRate}%</span></span>
                         </div>
                         <button onclick="vote(${item.id}, ${item.votes})" 
                                 id="btn-${item.id}"
