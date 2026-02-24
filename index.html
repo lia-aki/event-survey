@@ -125,7 +125,7 @@
 
             const grid = document.getElementById('items-grid');
             
-            const totalVotes = allItems.reduce((sum, item) => sum + (item.votes || 0), 0);
+            const totalVotes = items.reduce((sum, item) => sum + (item.votes || 0), 0);
             
             if (error || !items || items.length === 0) {
                 grid.innerHTML = '<p class="col-span-full text-center text-gray-400">表示できるアイテムがありません。</p>';
