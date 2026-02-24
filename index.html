@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>投票ページ | Loading...</title>
+    <link rel="icon" type="image/png" href="https://eiladnaqqcddtkfqypvb.supabase.co/storage/v1/object/public/event-pictures/momorin.png">
+    <link rel="apple-touch-icon" href="https://eiladnaqqcddtkfqypvb.supabase.co/storage/v1/object/public/event-pictures/momorin.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
@@ -20,11 +22,28 @@
 <body class="bg-[#fafafa] text-[#333]">
 
     <header class="bg-white border-b border-pink-100 p-8 mb-8 text-center shadow-sm">
-        <h1 id="event-name" class="text-2xl font-bold text-[#d23669] mb-2">読み込み中...</h1>
+        <h1 id="title" class="text-2xl font-bold text-[#d23669] mb-2">RosenliaDoll イベント活動</h1>
         <div id="event-details" class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-gray-500 opacity-0 transition-opacity duration-500">
+        	<span>イベント：<span id="event-name" class="font-semibold text-gray-800">読み込み中...</span></span>
             <span>開催日：<span id="event-date" class="font-semibold text-gray-800">-</span></span>
             <span>スペース：<span id="booth-no" class="font-semibold text-gray-800">-</span></span>
         </div>
+        
+        <main class="max-w-4xl mx-auto px-4 mb-20">
+	        <div id="status-banner" class="hidden bg-gray-100 border border-gray-200 rounded-2xl p-4 mb-6 text-center text-gray-500 text-sm">
+	            今回の事前調査の投票受付は終了いたしました。
+	        </div>
+
+	        <div class="bg-white border border-pink-100 rounded-2xl p-6 mb-10 text-center shadow-sm">
+	            <p class="text-sm leading-relaxed text-gray-600">
+	                <span class="text-pink-500 font-bold">【事前調査】</span><br>
+	                当日のお持ち込み数の参考にさせていただきます。
+	            </p>
+	        </div>
+	        
+	        <div id="items-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+	        </div>
+        </main>
     </header>
 
     <main class="max-w-4xl mx-auto px-4 mb-20">
@@ -52,6 +71,7 @@
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVpbGFkbmFxcWNkZHRrZnF5cHZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNTI1MjAsImV4cCI6MjA4NjkyODUyMH0.ypTl6LS3wvjc_24-eCNOxvvZVOAQ6F_PGhoXfHWW8pY';
         const myAppClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+		let isVoteAllowed = true;
         // --- 初期化処理 ---
         async function init() {
             try {
@@ -67,7 +87,13 @@
                     document.getElementById('event-date').innerText = config.event_date;
                     document.getElementById('booth-no').innerText = config.booth_no;
                     document.getElementById('event-details').classList.remove('opacity-0');
-                    document.title = config.event_name + " | 投票";
+                    document.title = "RosenliaDoll イベント活動";
+                    
+                    // 设置全局开关状态
+                    isVoteAllowed = config.vote_flg; 
+                    if (!isVoteAllowed) {
+                        document.getElementById('status-banner').classList.remove('hidden');
+                    }
                 }
 
                 // 2. 作品リストを取得
@@ -95,6 +121,16 @@
 
             grid.innerHTML = items.map(item => {
                 const isVoted = localStorage.getItem('voted_' + item.id);
+                
+                // 核心逻辑：如果开关关闭，按钮文字变更为“受付終了”
+                let buttonText = isVoted ? '投票済み' : '投票する';
+                let buttonClass = (isVoted || !isVoteAllowed) ? 'disabled-btn' : 'bg-[#d23669] hover:bg-[#b02d57]';
+                let isDisabled = isVoted || !isVoteAllowed;
+
+                if (!isVoteAllowed && !isVoted) {
+                    buttonText = '受付終了';
+                }
+                
                 return `
                 <div class="item-card bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">
                     <img src="${item.image_url}" class="w-full h-72 object-cover" alt="${item.item_name}" onerror="this.src='https://placehold.jp/24/cccccc/ffffff/400x300.png?text=No%20Image'">
@@ -118,6 +154,9 @@
 
         // --- 投票ロジック ---
         async function vote(id, currentVotes) {
+        	// 再次检查开关，防止有人通过控制台作弊
+            if (!isVoteAllowed || localStorage.getItem('voted_' + id)) return;
+            
             if (localStorage.getItem('voted_' + id)) return;
 
             const { data, error } = await myAppClient
