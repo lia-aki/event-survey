@@ -35,13 +35,36 @@
     	<div id="status-banner" class="hidden bg-gray-100 border border-gray-200 rounded-2xl p-4 mb-6 text-center text-gray-500 text-sm">
 	        今回の事前調査の投票受付は終了いたしました。
 	    </div>
-        <div class="bg-white border border-pink-100 rounded-2xl p-6 mb-10 text-center shadow-sm">
+	    
+	    <div class="bg-white border border-pink-100 rounded-2xl p-6 mb-10 text-center shadow-sm">
             <p class="text-sm leading-relaxed text-gray-600">
                 <span class="text-pink-500 font-bold">【事前調査】</span><br>
                 当日のお持ち込み数の参考にさせていただきます。<br>
                 お迎えを検討されている作品に「投票」ボタンを押してください。
             </p>
         </div>
+        
+	    <div class="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-10 shadow-sm">
+		    <h2 class="text-sm font-bold text-gray-700 mb-3 flex items-center justify-center">
+		        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+		        ご利用案内
+		    </h2>
+		    <ul class="text-xs text-gray-600 space-y-2 text-left sm:px-10">
+		        <li class="flex items-start">
+		            <span class="text-pink-500 mr-2">●</span>
+		            <span>本サイトは、当日の持ち込み数を確認するための<strong>アンケート専用ページ</strong>です。</span>
+		        </li>
+		        <li class="flex items-start">
+		            <span class="text-pink-500 mr-2">●</span>
+		            <span>本サイト上での<strong>お支払い、金銭のやり取りは一切発生いたしません</strong>。</span>
+		        </li>
+		        <li class="flex items-start">
+		            <span class="text-pink-500 mr-2">●</span>
+		            <span>投票は当日の在庫を確約するものではございません。当日は<strong>先着順</strong>での販売となりますので、完売の際はご容赦ください。</span>
+		        </li>
+		    </ul>
+		</div>
+
         
         <div id="items-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-8">
             <div class="loading-shimmer h-80 rounded-xl"></div>
@@ -50,7 +73,7 @@
     </main>
 
     <footer class="p-10 text-center text-gray-400 text-xs">
-        © <span id="year"></span> Your Brand Name.
+        © <span id="year"></span> RosenliaDoll. All Rights Reserved.
     </footer>
 
     <script>
