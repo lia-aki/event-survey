@@ -29,24 +29,12 @@
             <span>スペース：<span id="booth-no" class="font-semibold text-gray-800">-</span></span>
         </div>
         
-        <main class="max-w-4xl mx-auto px-4 mb-20">
-	        <div id="status-banner" class="hidden bg-gray-100 border border-gray-200 rounded-2xl p-4 mb-6 text-center text-gray-500 text-sm">
-	            今回の事前調査の投票受付は終了いたしました。
-	        </div>
-
-	        <div class="bg-white border border-pink-100 rounded-2xl p-6 mb-10 text-center shadow-sm">
-	            <p class="text-sm leading-relaxed text-gray-600">
-	                <span class="text-pink-500 font-bold">【事前調査】</span><br>
-	                当日のお持ち込み数の参考にさせていただきます。
-	            </p>
-	        </div>
-	        
-	        <div id="items-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-8">
-	        </div>
-        </main>
     </header>
 
     <main class="max-w-4xl mx-auto px-4 mb-20">
+    	<div id="status-banner" class="hidden bg-gray-100 border border-gray-200 rounded-2xl p-4 mb-6 text-center text-gray-500 text-sm">
+	        今回の事前調査の投票受付は終了いたしました。
+	    </div>
         <div class="bg-white border border-pink-100 rounded-2xl p-6 mb-10 text-center shadow-sm">
             <p class="text-sm leading-relaxed text-gray-600">
                 <span class="text-pink-500 font-bold">【事前調査】</span><br>
@@ -144,7 +132,7 @@
                                 id="btn-${item.id}"
                                 ${isVoted ? 'disabled' : ''}
                                 class="w-full ${isVoted ? 'voted-btn' : 'bg-[#d23669] hover:bg-[#b02d57]'} text-white py-3 rounded-lg text-sm font-bold transition-all shadow-md active:scale-95">
-                            ${isVoted ? '投票済み' : '投票する'}
+                            ${buttonText}
                         </button>
                     </div>
                 </div>
