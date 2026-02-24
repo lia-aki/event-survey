@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>イベントお品書き投票 | Inventory Survey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Noto Sans JP', sans-serif; }
+        .item-card { transition: all 0.3s ease; border: 1px solid #f0f0f0; }
+        .item-card:hover { transform: translateY(-3px); border-color: #ffb7c5; }
+        /* 投票済みボタンのスタイル */
+        .voted-btn { background-color: #d1d5db !important; cursor: not-allowed; }
+    </style>
+</head>
+<body class="bg-[#fafafa] text-[#333]">
+
+    <header class="bg-white border-b border-pink-100 p-8 mb-8 text-center">
+        <h1 id="event-name" class="text-2xl font-bold text-[#d23669] mb-2">読み込み中...</h1>
+        <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-gray-600">
+            <span>開催日：<span id="event-date" class="font-semibold text-gray-800">-</span></span>
+            <span>スペース：<span id="booth-no" class="font-semibold text-gray-800">-</span></span>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 mb-20">
+        <div class="bg-pink-50 border border-pink-100 rounded-lg p-4 mb-10 text-center">
+            <p class="text-sm leading-relaxed">
+                ご覧いただきありがとうございます！<br>
+                当日の持ち込み数を検討するため、<b>購入を予定されている作品</b>に投票をお願いします。<br>
+                <span class="text-xs text-pink-500">※お一人様各アイテム1回まで。</span>
+            </p>
+        </div>
+        
+        <div id="items-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            </div>
+    </main>
+
+    <footer class="bg-white border-t border-gray-100 p-10 text-center text-gray-400 text-xs">
+        © <span id="year"></span> Your Brand Name. All Rights Reserved.
+    </footer>
+
+    <script>
+        // --- 設定 (Supabaseから取得した情報を入力してください) ---
+        const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+        const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // --- イベント情報 (手動書き換え、またはDBから取得) ---
+        const eventInfo = {
+            name: "iDoll Tokyo Vol.XX",
+            booth: "東4ホール A12",
+            date: "2026年3月20日(金)"
+        };
+
+        // UI初期化
+        document.getElementById('event-name').innerText = eventInfo.name;
+        document.getElementById('booth-no').innerText = eventInfo.booth;
+        document.getElementById('event-date').innerText = eventInfo.date;
+        document.getElementById('year').innerText = new Date().getFullYear();
+
+        // 1. 作品データの読み込み
+        async function fetchItems() {
+            const { data: items, error } = await supabase
+                .from('doll_show')
+                .select('*')
+                .order('id', { ascending: true });
+
+            if (error) {
+                console.error('Error fetching data:', error);
+                return;
+            }
+            
+            const grid = document.getElementById('items-grid');
+            grid.innerHTML = items.map(item => {
+                // 投票済みかチェック (ブラウザの保存情報)
+                const isVoted = localStorage.getItem('voted_' + item.id);
+                
+                return `
+                <div class="item-card bg-white rounded-xl overflow-hidden shadow-sm">
+                    <img src="${item.image_url}" class="w-full h-72 object-cover bg-gray-100" alt="${item.item_name}">
+                    <div class="p-5">
+                        <div class="mb-4">
+                            <h3 class="font-bold text-lg mb-1 truncate text-gray-800">${item.item_name}</h3>
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-gray-400 font-mono">ID: ${item.id}</span>
+                                <span class="text-pink-500">投票数: <span id="count-${item.id}" class="text-lg font-bold">${item.votes}</span></span>
+                            </div>
+                        </div>
+                        <button onclick="vote(${item.id}, ${item.votes})" 
+                                id="btn-${item.id}"
+                                ${isVoted ? 'disabled' : ''}
+                                class="w-full ${isVoted ? 'voted-btn' : 'bg-[#d23669] hover:bg-[#b02d57]'} text-white py-3 rounded-lg text-sm font-bold transition-all active:scale-95 shadow-md">
+                            ${isVoted ? '投票済み' : '投票する (購入検討中)'}
+                        </button>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // 2. 投票処理
+        async function vote(id, currentVotes) {
+            // 重複投票ガード
+            if (localStorage.getItem('voted_' + id)) return;
+
+            const { data, error } = await supabase
+                .from('doll_show')
+                .update({ votes: currentVotes + 1 })
+                .eq('id', id)
+                .select();
+
+            if (!error) {
+                // UIの更新
+                const countElem = document.getElementById(`count-${id}`);
+                const btnElem = document.getElementById(`btn-${id}`);
+                
+                countElem.innerText = currentVotes + 1;
+                btnElem.innerText = "投票済み";
+                btnElem.classList.add('voted-btn');
+                btnElem.disabled = true;
+                
+                // ブラウザに投票記録を保存
+                localStorage.setItem('voted_' + id, 'true');
+                
+                // 日本ユーザー向けのサンクスメッセージ
+                alert("投票ありがとうございました！当日の参考にさせていただきます。");
+            } else {
+                alert("エラーが発生しました。時間を置いて再度お試しください。");
+            }
+        }
+
+        fetchItems();
+    </script>
+</body>
+</html>
