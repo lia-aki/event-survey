@@ -50,13 +50,13 @@
         // --- Supabase設定 ---
         const SUPABASE_URL = 'https://eiladnaqqcddtkfqypvb.supabase.co'; 
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVpbGFkbmFxcWNkZHRrZnF5cHZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNTI1MjAsImV4cCI6MjA4NjkyODUyMH0.ypTl6LS3wvjc_24-eCNOxvvZVOAQ6F_PGhoXfHWW8pY';
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const myAppClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         // --- 初期化処理 ---
         async function init() {
             try {
                 // 1. 展会情報を取得
-                const { data: config, error: configError } = await supabase
+                const { data: config, error: configError } = await myAppClient
                     .from('event_config')
                     .select('*')
                     .limit(1)
@@ -81,7 +81,7 @@
 
         // --- 作品リスト描画 ---
         async function fetchItems() {
-            const { data: items, error } = await supabase
+            const { data: items, error } = await myAppClient
                 .from('doll_show')
                 .select('*')
                 .order('display_order', { ascending: true });
@@ -120,7 +120,7 @@
         async function vote(id, currentVotes) {
             if (localStorage.getItem('voted_' + id)) return;
 
-            const { data, error } = await supabase
+            const { data, error } = await myAppClient
                 .from('doll_show')
                 .update({ votes: currentVotes + 1 })
                 .eq('id', id)
