@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>投票ページ | Loading...</title>
+    <title>投票ページ</title>
     <link rel="icon" type="image/png" href="https://eiladnaqqcddtkfqypvb.supabase.co/storage/v1/object/public/event-pictures/momorin.png">
     <link rel="apple-touch-icon" href="https://eiladnaqqcddtkfqypvb.supabase.co/storage/v1/object/public/event-pictures/momorin.png">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -14,9 +14,10 @@
         .item-card { transition: all 0.3s ease; }
         .item-card:hover { transform: translateY(-5px); }
         .voted-btn { background-color: #d1d5db !important; cursor: not-allowed; }
-        /* 加载动画 */
         .loading-shimmer { background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        .color-option:checked + label { border-color: #d23669; background-color: #fff1f2; color: #d23669; font-weight: bold; }
+        .active-filter { background-color: #d23669 !important; color: white !important; border-color: #d23669 !important; }
     </style>
 </head>
 <body class="bg-[#fafafa] text-[#333]">
@@ -24,19 +25,17 @@
     <header class="bg-white border-b border-pink-100 p-8 mb-8 text-center shadow-sm">
         <h1 id="title" class="text-2xl font-bold text-[#d23669] mb-2">RosenliaDollアンケート</h1>
         <div id="event-details" class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-gray-500 opacity-0 transition-opacity duration-500">
-        	<span>イベント：<span id="event-name" class="font-semibold text-gray-800">読み込み中...</span></span>
+            <span>イベント：<span id="event-name" class="font-semibold text-gray-800">読み込み中...</span></span>
             <span>開催日：<span id="event-date" class="font-semibold text-gray-800">-</span></span>
-            <span>スペース：<span id="booth-no" class="font-semibold text-gray-800">-</span></span>
         </div>
-        
     </header>
 
     <main class="max-w-4xl mx-auto px-4 mb-20">
-    	<div id="status-banner" class="hidden bg-gray-100 border border-gray-200 rounded-2xl p-4 mb-6 text-center text-gray-500 text-sm">
-	        今回のアンケートの投票受付は終了いたしました。
-	    </div>
-	    
-	    <div class="bg-white border border-pink-100 rounded-2xl p-6 mb-10 text-center shadow-sm">
+        <div id="status-banner" class="hidden bg-gray-100 border border-gray-200 rounded-2xl p-4 mb-6 text-center text-gray-500 text-sm">
+            今回のアンケートの投票受付は終了いたしました。
+        </div>
+        
+        <div class="bg-white border border-pink-100 rounded-2xl p-6 mb-10 text-center shadow-sm">
             <p class="text-sm leading-relaxed text-gray-600">
                 <span class="text-pink-500 font-bold">【アンケート】</span><br>
                 当日のお持ち込み数の参考にさせていただきます。<br>
@@ -44,28 +43,24 @@
             </p>
         </div>
         
-	    <div class="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-10 shadow-sm">
-		    <h2 class="text-sm font-bold text-gray-700 mb-3 flex items-center justify-center">
-		        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
-		        ご利用案内
-		    </h2>
-		    <ul class="text-xs text-gray-600 space-y-2 text-left sm:px-10">
-		        <li class="flex items-start">
-		            <span class="text-pink-500 mr-2">●</span>
-		            <span>本サイトは、当日の持ち込み数を確認するための<strong>アンケート専用ページ</strong>です。</span>
-		        </li>
-		        <li class="flex items-start">
-		            <span class="text-pink-500 mr-2">●</span>
-		            <span>本サイト上での<strong>お支払い、金銭のやり取りは一切発生いたしません</strong>。</span>
-		        </li>
-		        <li class="flex items-start">
-		            <span class="text-pink-500 mr-2">●</span>
-		            <span>投票は当日の在庫を確約するものではございません。当日は<strong>先着順</strong>での販売となりますので、完売の際はご容赦ください。</span>
-		        </li>
-		    </ul>
-		</div>
+        <div class="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-10 shadow-sm">
+            <h2 class="text-sm font-bold text-gray-700 mb-3 flex items-center justify-center">
+                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                ご利用案内
+            </h2>
+            <ul class="text-xs text-gray-600 space-y-2 text-left sm:px-10">
+                <li class="flex items-start"><span class="text-pink-500 mr-2">●</span><span>本サイトは、当日の持ち込み数を確認するための<strong>アンケート専用ページ</strong>です。</span></li>
+                <li class="flex items-start"><span class="text-pink-500 mr-2">●</span><span>本サイト上での<strong>お支払い、金銭のやり取りは一切発生いたしません</strong>。</span></li>
+                <li class="flex items-start"><span class="text-pink-500 mr-2">●</span><span>投票は当日の在庫を確約するものではございません。当日は<strong>先着順</strong>での販売となります。</span></li>
+            </ul>
+        </div>
 
-        
+        <div class="mb-8 flex justify-center gap-2" id="filter-container">
+            <button onclick="filterItems('all')" id="filter-all" class="filter-btn active-filter px-5 py-2 rounded-full text-xs font-bold border transition-all">すべて</button>
+            <button onclick="filterItems('衣服')" id="filter-衣服" class="filter-btn px-5 py-2 rounded-full text-xs font-bold border border-gray-200 text-gray-500 hover:bg-pink-50 transition-all">衣服</button>
+            <button onclick="filterItems('假发')" id="filter-假发" class="filter-btn px-5 py-2 rounded-full text-xs font-bold border border-gray-200 text-gray-500 hover:bg-pink-50 transition-all">ウィッグ</button>
+        </div>
+
         <div id="items-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-8">
             <div class="loading-shimmer h-80 rounded-xl"></div>
             <div class="loading-shimmer h-80 rounded-xl"></div>
@@ -82,121 +77,131 @@
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVpbGFkbmFxcWNkZHRrZnF5cHZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNTI1MjAsImV4cCI6MjA4NjkyODUyMH0.ypTl6LS3wvjc_24-eCNOxvvZVOAQ6F_PGhoXfHWW8pY';
         const myAppClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-		let isVoteAllowed = true;
+        // --- グローバル変数 ---
+        let isVoteAllowed = true;
+        let allItems = []; // 全データを保持する配列
+        let currentCategory = 'all'; // 現在選択されているカテゴリ
+
         // --- 初期化処理 ---
         async function init() {
             try {
-                // 1. 展会情報を取得
-                const { data: config, error: configError } = await myAppClient
-                    .from('event_config')
-                    .select('*')
-                    .limit(1)
-                    .single();
-
+                // イベント設定を取得
+                const { data: config } = await myAppClient.from('event_config').select('*').limit(1).single();
                 if (config) {
                     document.getElementById('event-name').innerText = config.event_name;
                     document.getElementById('event-date').innerText = config.event_date;
-                    document.getElementById('booth-no').innerText = config.booth_no;
                     document.getElementById('event-details').classList.remove('opacity-0');
-                    document.title = "RosenliaDollアンケート";
-                    
-                    // 设置全局开关状态
                     isVoteAllowed = config.vote_flg; 
-                    if (!isVoteAllowed) {
-                        document.getElementById('status-banner').classList.remove('hidden');
-                    }
+                    if (!isVoteAllowed) document.getElementById('status-banner').classList.remove('hidden');
                 }
-
-                // 2. 作品リストを取得
+                // 商品データを取得
                 await fetchItems();
-                
                 document.getElementById('year').innerText = new Date().getFullYear();
-            } catch (err) {
-                console.error("Initialization error:", err);
+            } catch (err) { console.error("初期化エラー:", err); }
+        }
+
+        // --- データ取得処理 ---
+        async function fetchItems() {
+            const { data: items } = await myAppClient.from('doll_show').select('*').order('display_order', { ascending: true });
+            if (items) {
+                allItems = items;
+                renderGrid();
             }
         }
 
-        // --- 作品リスト描画 ---
-        async function fetchItems() {
-            const { data: items, error } = await myAppClient
-                .from('doll_show')
-                .select('*')
-                .order('display_order', { ascending: true });
+        // --- カテゴリ切り替え処理 ---
+        function filterItems(category) {
+            currentCategory = category;
+            // ボタンのスタイルを更新
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active-filter');
+                btn.classList.add('border-gray-200', 'text-gray-500');
+            });
+            document.getElementById('filter-' + category).classList.add('active-filter');
+            // グリッドを再描画
+            renderGrid();
+        }
 
+        // --- グリッド描画処理 ---
+        function renderGrid() {
             const grid = document.getElementById('items-grid');
+            const filteredItems = currentCategory === 'all' ? allItems : allItems.filter(i => i.category === currentCategory);
             
-            const totalVotes = items.reduce((sum, item) => sum + (item.votes || 0), 0);
-            
-            if (error || !items || items.length === 0) {
-                grid.innerHTML = '<p class="col-span-full text-center text-gray-400">表示できるアイテムがありません。</p>';
+            // 全体の総得票数を計算（パーセンテージ用）
+            const totalVotes = allItems.reduce((sum, item) => sum + (item.votes || 0), 0);
+
+            if (filteredItems.length === 0) {
+                grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-10">アイテムがありません。</p>';
                 return;
             }
 
-            grid.innerHTML = items.map(item => {
+            grid.innerHTML = filteredItems.map(item => {
                 const isVoted = localStorage.getItem('voted_' + item.id);
+                // パーセンテージ計算
+                const voteRate = totalVotes === 0 ? 0 : ((item.votes / totalVotes) * 100).toFixed(1);
+                const colorList = item.colors ? item.colors.split(',') : [];
                 
-                // 核心逻辑：如果开关关闭，按钮文字变更为“受付終了”
-                let buttonText = isVoted ? '投票済み' : '投票する';
-                let buttonClass = (isVoted || !isVoteAllowed) ? 'disabled-btn' : 'bg-[#d23669] hover:bg-[#b02d57]';
-                let isDisabled = isVoted || !isVoteAllowed;
+                let buttonText = isVoted ? '投票済み' : (isVoteAllowed ? '投票する' : '受付終了');
+                let buttonClass = (isVoted || !isVoteAllowed) ? 'voted-btn' : 'bg-[#d23669] hover:bg-[#b02d57]';
 
-                if (!isVoteAllowed && !isVoted) {
-                    buttonText = '受付終了';
-                }
-                
-
-                const voteRate = totalVotes === 0 
-		            ? 0 
-		            : ((item.votes / totalVotes) * 100).toFixed(1);
-                
                 return `
-                <div class="item-card bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">
-                    <img src="${item.image_url}" class="w-full h-auto block" alt="${item.item_name}" onerror="this.src='https://placehold.jp/24/cccccc/ffffff/400x300.png?text=No%20Image'">
-                    <div class="p-5">
-                        <h3 class="font-bold text-lg mb-3 text-gray-800">${item.item_name}</h3>
-                        <div class="flex justify-between items-end mb-4">
-                            <span class="text-xs text-gray-400">Item ID: ${item.id}</span>
-                            <span class="text-pink-500 text-sm font-bold">投票率: <span id="count-${item.id}" class="text-xl">${voteRate}%</span></span>
+                <div class="item-card bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 flex flex-col">
+                    <img src="${item.image_url}" class="w-full h-72 object-contain bg-gray-50 p-2" alt="${item.item_name}" onerror="this.src='https://placehold.jp/24/cccccc/ffffff/400x300.png?text=No%20Image'">
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex justify-between items-center mb-2">
+                             <span class="px-2 py-0.5 bg-gray-100 text-[10px] text-gray-500 rounded font-bold">${item.category || '作品'}</span>
+                             <span class="text-pink-500 text-xs font-bold">支持率: ${voteRate}%</span>
                         </div>
-                        <button onclick="vote(${item.id}, ${item.votes})" 
-                                id="btn-${item.id}"
-                                ${isVoted ? 'disabled' : ''}
-                                class="w-full ${isVoted ? 'voted-btn' : 'bg-[#d23669] hover:bg-[#b02d57]'} text-white py-3 rounded-lg text-sm font-bold transition-all shadow-md active:scale-95">
-                            ${buttonText}
-                        </button>
+                        <h3 class="font-bold text-lg mb-4 text-gray-800">${item.item_name}</h3>
+                        
+                        <div class="mb-6">
+                            <p class="text-[10px] text-gray-400 font-bold mb-2">カラーを選択</p>
+                            <div class="flex flex-wrap gap-2">
+                                ${colorList.map((color, idx) => `
+                                    <div class="relative">
+                                        <input type="radio" name="color-${item.id}" id="c-${item.id}-${idx}" value="${color}" class="color-option hidden" ${idx === 0 ? 'checked' : ''} ${!isVoteAllowed || isVoted ? 'disabled' : ''}>
+                                        <label for="c-${item.id}-${idx}" class="block border border-gray-200 px-3 py-1.5 rounded-lg text-xs cursor-pointer hover:bg-pink-50 text-gray-600 transition-all">${color}</label>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div class="mt-auto">
+                            <button onclick="vote(${item.id}, ${item.votes})" id="btn-${item.id}"
+                                ${ (isVoted || !isVoteAllowed) ? 'disabled' : '' }
+                                class="w-full ${buttonClass} text-white py-3 rounded-lg text-sm font-bold transition-all shadow-md active:scale-95">
+                                ${buttonText}
+                            </button>
+                        </div>
                     </div>
                 </div>
                 `;
             }).join('');
         }
 
-        // --- 投票ロジック ---
+        // --- 投票処理 ---
         async function vote(id, currentVotes) {
-        	// 再次检查开关，防止有人通过控制台作弊
+            // 重複投票と期間外のチェック
             if (!isVoteAllowed || localStorage.getItem('voted_' + id)) return;
             
-            if (localStorage.getItem('voted_' + id)) return;
+            // 選択されたカラーを取得
+            const selectedColor = document.querySelector(`input[name="color-${id}"]:checked`).value;
 
-            const { data, error } = await myAppClient
-                .from('doll_show')
-                .update({ votes: currentVotes + 1 })
-                .eq('id', id)
-                .select();
+            // Supabaseのデータを更新
+            const { error } = await myAppClient.from('doll_show').update({ votes: currentVotes + 1 }).eq('id', id);
 
             if (!error) {
-                const countElem = document.getElementById(`count-${id}`);
-                const btnElem = document.getElementById(`btn-${id}`);
-                
-                countElem.innerText = currentVotes + 1;
-                btnElem.innerText = "投票済み";
-                btnElem.classList.add('voted-btn');
-                btnElem.disabled = true;
-                
+                // 1. ローカルデータを更新（即時反映用）
+                allItems = allItems.map(item => item.id === id ? {...item, votes: item.votes + 1} : item);
+                // 2. 投票済みフラグを保存
                 localStorage.setItem('voted_' + id, 'true');
-                alert("投票ありがとうございました！");
+                // 3. 画面を再描画（パーセンテージも自動更新）
+                renderGrid();
+                alert(`「${selectedColor}」で投票を受け付けました。ありがとうございます！`);
             }
         }
 
+        // 実行開始
         init();
     </script>
 </body>
