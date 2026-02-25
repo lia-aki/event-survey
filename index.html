@@ -152,6 +152,8 @@
                 const isVoted = localStorage.getItem(`voted_${eventName}_${item.id}`);
                 // パーセンテージ計算
                 const voteRate = totalVotes === 0 ? 0 : ((item.votes / totalVotes) * 100).toFixed(1);
+                // 1000倍してスコアにする
+				const popularScore = Math.floor(voteRate * 100);
                 const colorList = item.colors ? item.colors.split(',') : [];
                 
                 let buttonText = isVoted ? '投票済み' : (isVoteAllowed ? '投票する' : '受付終了');
@@ -163,7 +165,7 @@
                     <div class="p-5 flex-1 flex flex-col">
                         <div class="flex justify-between items-center mb-2">
                              <span class="px-2 py-0.5 bg-gray-100 text-[10px] text-gray-500 rounded font-bold">${item.category || '作品'}</span>
-                             <span class="text-[#8378c3] text-xs font-bold">人気度: ${voteRate}%</span>
+                             <span class="text-[#8378c3] text-xl italic font-bold">スコア: ${popularScore}💗</span>
                         </div>
                         <h3 class="font-bold text-lg mb-4 text-gray-800">${item.item_name}</h3>
                         <!--
