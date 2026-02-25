@@ -185,7 +185,7 @@
             if (!isVoteAllowed || localStorage.getItem('voted_' + id)) return;
             
             // 選択されたカラーを取得
-            const selectedColor = document.querySelector(`input[name="color-${id}"]:checked`).value;
+            <!--const selectedColor = document.querySelector(`input[name="color-${id}"]:checked`).value;-->
 
             // Supabaseのデータを更新
             const { error } = await myAppClient.from('doll_show').update({ votes: currentVotes + 1 }).eq('id', id);
@@ -197,7 +197,8 @@
                 localStorage.setItem('voted_' + id, 'true');
                 // 3. 画面を再描画（パーセンテージも自動更新）
                 renderGrid();
-                alert(`「${selectedColor}」で投票を受け付けました。ありがとうございます！`);
+                alert("投票ありがとうございました！");
+                <!--alert(`「${selectedColor}」で投票を受け付けました。ありがとうございます！`);-->
             }
         }
 
