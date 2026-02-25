@@ -57,8 +57,8 @@
 
         <div class="mb-8 flex justify-center gap-2" id="filter-container">
             <button onclick="filterItems('all')" id="filter-all" class="filter-btn active-filter px-5 py-2 rounded-full text-xs font-bold border transition-all">すべて</button>
-            <button onclick="filterItems('衣服')" id="filter-衣服" class="filter-btn px-5 py-2 rounded-full text-xs font-bold border border-gray-200 text-gray-500 hover:bg-pink-50 transition-all">衣服</button>
-            <button onclick="filterItems('假发')" id="filter-假发" class="filter-btn px-5 py-2 rounded-full text-xs font-bold border border-gray-200 text-gray-500 hover:bg-pink-50 transition-all">ウィッグ</button>
+            <button onclick="filterItems('ドール服')" id="filter-ドール服" class="filter-btn px-5 py-2 rounded-full text-xs font-bold border border-gray-200 text-gray-500 hover:bg-pink-50 transition-all">ドール服</button>
+            <button onclick="filterItems('ウィッグ')" id="filter-ウィッグ" class="filter-btn px-5 py-2 rounded-full text-xs font-bold border border-gray-200 text-gray-500 hover:bg-pink-50 transition-all">ウィッグ</button>
         </div>
 
         <div id="items-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-8">
@@ -79,7 +79,7 @@
 
         // --- グローバル変数 ---
         let isVoteAllowed = true;
-        let allItems = []; // 全データを保持する配列
+        let 	 = []; // 全データを保持する配列
         let currentCategory = 'all'; // 現在選択されているカテゴリ
 
         // --- 初期化処理 ---
@@ -153,7 +153,7 @@
                              <span class="text-pink-500 text-xs font-bold">支持率: ${voteRate}%</span>
                         </div>
                         <h3 class="font-bold text-lg mb-4 text-gray-800">${item.item_name}</h3>
-                        
+                        <!--
                         <div class="mb-6">
                             <p class="text-[10px] text-gray-400 font-bold mb-2">カラーを選択</p>
                             <div class="flex flex-wrap gap-2">
@@ -164,7 +164,7 @@
                                     </div>
                                 `).join('')}
                             </div>
-                        </div>
+                        </div>-->
 
                         <div class="mt-auto">
                             <button onclick="vote(${item.id}, ${item.votes})" id="btn-${item.id}"
