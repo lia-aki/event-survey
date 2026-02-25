@@ -23,9 +23,16 @@
 <body class="bg-[#fafafa] text-[#333]">
 
     <header class="bg-white border-b border-pink-100 p-8 mb-8 text-center shadow-sm">
-         <div class="max-w-4xl mx-auto flex items-center justify-center gap-4">
-	        <img src="https://eiladnaqqcddtkfqypvb.supabase.co/storage/v1/object/public/event-pictures/momorin.png" alt="Logo" class="h-12 w-auto">
-	        <h1 id="title" class="text-2xl font-bold text-[#d23669] mb-2">RosenliaDollアンケート</h1>
+	    <div class="flex justify-center items-center max-w-full overflow-hidden">
+	    <img src="https://eiladnaqqcddtkfqypvb.supabase.co/storage/v1/object/public/event-pictures/momorin.png" alt="Logo" class="h-12 w-auto">
+	        <div id="title-container" style="flex: 1 1 auto; max-width: 320px; min-width: 0;">
+	            <svg viewBox="0 0 320 40" class="w-full h-auto block">
+	                <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" 
+	                      font-family="'Noto Sans JP', sans-serif" font-weight="700" fill="#d23669" style="font-size: 25px;">
+	                    RosenliaDollアンケート
+	                </text>
+	            </svg>
+	        </div>
 	    </div>
         <div id="event-details" class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-gray-500 opacity-0 transition-opacity duration-500">
             <span>イベント：<span id="event-name" class="font-semibold text-gray-800">読み込み中...</span></span>
