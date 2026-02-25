@@ -24,7 +24,7 @@
 
     <header class="bg-white border-b border-pink-100 p-8 mb-8 text-center shadow-sm">
 	    <div class="flex justify-center items-center max-w-full overflow-hidden">
-	    <img src="https://eiladnaqqcddtkfqypvb.supabase.co/storage/v1/object/public/event-pictures/momorin.png" alt="Logo" class="h-12 w-auto">
+	    	<img src="https://eiladnaqqcddtkfqypvb.supabase.co/storage/v1/object/public/event-pictures/momorin.png" alt="Logo" class="h-12 w-auto">
 	        <div id="title-container" style="flex: 1 1 auto; max-width: 320px; min-width: 0;">
 	            <svg viewBox="0 0 320 40" class="w-full h-auto block">
 	                <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" 
@@ -50,7 +50,7 @@
                 <span class="text-pink-500 font-bold">【アンケート】</span><br>
                 <ul class="text-xs text-gray-600 space-y-2 text-left sm:px-10">
                 <li class="flex items-start"><span class="text-pink-500 mr-2">●</span><span class="mr-2">当日のお持ち込み数の参考にさせていただきます。</span></li>
-                <li class="flex items-start"><span class="text-pink-500 mr-2">●</span><span class="mr-2">お迎えを検討されている作品に「投票」ボタンを押してください。</span></li>
+                <li class="flex items-start"><span class="text-pink-500 mr-2">●</span><span class="mr-2">お迎えを検討されている作品に「投票」ボタンを押してください。<strong>複数アイテムへの投票が可能</strong>です</span></li>
                  </ul>
             </p>
         </div>
@@ -62,8 +62,8 @@
             </h2>
             <ul class="text-xs text-gray-600 space-y-2 text-left sm:px-10">
                 <li class="flex items-start"><span class="text-pink-500 mr-2">●</span><span>本サイトは、当日の持ち込み数を確認するための<strong>アンケート専用ページ</strong>です。</span></li>
-                <li class="flex items-start"><span class="text-pink-500 mr-2">●</span><span>本サイト上での<strong>お支払い、金銭のやり取りは一切発生いたしません</strong>。</span></li>
                 <li class="flex items-start"><span class="text-pink-500 mr-2">●</span><span>投票は当日の在庫を確約するものではございません。当日は<strong>先着順</strong>での販売となります。</span></li>
+                <li class="flex items-start"><span class="text-pink-500 mr-2">●</span><span>本サイト上での<strong>お支払い、金銭のやり取りは一切発生いたしません</strong>。</span></li>
             </ul>
         </div>
 
@@ -148,7 +148,8 @@
             }
 
             grid.innerHTML = filteredItems.map(item => {
-                const isVoted = localStorage.getItem('voted_' + item.id);
+            	const eventName = document.getElementById('event-name').innerText;
+                const isVoted = localStorage.getItem(`voted_${eventName}_${item.id}`);
                 // パーセンテージ計算
                 const voteRate = totalVotes === 0 ? 0 : ((item.votes / totalVotes) * 100).toFixed(1);
                 const colorList = item.colors ? item.colors.split(',') : [];
@@ -206,7 +207,8 @@
                 // 1. ローカルデータを更新（即時反映用）
                 allItems = allItems.map(item => item.id === id ? {...item, votes: item.votes + 1} : item);
                 // 2. 投票済みフラグを保存
-                localStorage.setItem('voted_' + id, 'true');
+                const eventName = document.getElementById('event-name').innerText;
+                localStorage.setItem(`voted_${eventName}_${id}`, 'true');
                 // 3. 画面を再描画（パーセンテージも自動更新）
                 renderGrid();
                 alert("投票ありがとうございました！");
