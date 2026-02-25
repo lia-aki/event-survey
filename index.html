@@ -23,7 +23,10 @@
 <body class="bg-[#fafafa] text-[#333]">
 
     <header class="bg-white border-b border-pink-100 p-8 mb-8 text-center shadow-sm">
-        <h1 id="title" class="text-2xl font-bold text-[#d23669] mb-2">RosenliaDollアンケート</h1>
+         <div class="max-w-4xl mx-auto flex items-center justify-center gap-4">
+	        <img src="https://eiladnaqqcddtkfqypvb.supabase.co/storage/v1/object/public/event-pictures/momorin.png" alt="Logo" class="h-12 w-auto">
+	        <h1 id="title" class="text-2xl font-bold text-[#d23669] mb-2">RosenliaDollアンケート</h1>
+	    </div>
         <div id="event-details" class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-gray-500 opacity-0 transition-opacity duration-500">
             <span>イベント：<span id="event-name" class="font-semibold text-gray-800">読み込み中...</span></span>
             <span>開催日：<span id="event-date" class="font-semibold text-gray-800">-</span></span>
@@ -38,8 +41,10 @@
         <div class="bg-white border border-pink-100 rounded-2xl p-6 mb-10 text-center shadow-sm">
             <p class="text-sm leading-relaxed text-gray-600">
                 <span class="text-pink-500 font-bold">【アンケート】</span><br>
-                当日のお持ち込み数の参考にさせていただきます。<br>
-                お迎えを検討されている作品に「投票」ボタンを押してください。
+                <ul class="text-xs text-gray-600 space-y-2 text-left sm:px-10">
+                <li class="flex items-start"><span class="text-pink-500 mr-2">●</span><span class="mr-2">当日のお持ち込み数の参考にさせていただきます。</span></li>
+                <li class="flex items-start"><span class="text-pink-500 mr-2">●</span><span class="mr-2">お迎えを検討されている作品に「投票」ボタンを押してください。</span></li>
+                 </ul>
             </p>
         </div>
         
